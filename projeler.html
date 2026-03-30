@@ -60,9 +60,6 @@
     .fade-in.delay-13 { animation-delay: 1.3s; }
     .fade-in.delay-14 { animation-delay: 1.4s; }
     .fade-in.delay-15 { animation-delay: 1.5s; }
-    .fade-in.delay-16 { animation-delay: 1.6s; }
-    .fade-in.delay-17 { animation-delay: 1.7s; }
-    .fade-in.delay-18 { animation-delay: 1.8s; }
   </style>
 </head>
 <body class="text-gray-800 font-sans">
@@ -127,7 +124,6 @@
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-
       ctx.beginPath();
       ctx.arc(mouse.x, mouse.y, 40, 0, 2 * Math.PI);
       ctx.fillStyle = "rgba(63,131,248,0.07)";
@@ -174,7 +170,6 @@
         ctx.fillStyle = `rgba(63, 131, 248, ${opacity})`;
         ctx.fill();
       }
-
       requestAnimationFrame(animate);
     }
     animate();
@@ -190,7 +185,7 @@
           "🔐 Adli Bilişim Uygulamaları ve Dijital Güvenlik",
           "🧠 Kavram Haritalama ve Dijital Bilgi Yönetimi",
           "🤖 Yapay Zeka Araçlarının Eğitimde Kullanımı",
-          "💼 İşletme Yönetimi ve Stratejik Liderlik",
+          "💼 İşletme Yönetimi ve Stratejik Liderlik"
         ],
         color: "from-blue-500 via-purple-500 to-pink-500",
         noIcon: true
@@ -201,22 +196,20 @@
         items: [
           "Visual Studio Code", "HTML / CSS / Temel JS", 
           "Adobe Photoshop", "Adobe Premiere Pro", "Canva",
-          "Notion & Obsidian", "WordPress",
+          "Notion & Obsidian", "WordPress"
         ],
         color: "from-green-400 via-teal-500 to-blue-500",
         noIcon: false,
         iconType: "terminal"
       },
       {
-title: "Yaklaşımım & Kişisel Özellikler",
-icon: "psychology",
-items: [
-  "Disiplinlerarası Perspektif: Felsefe, teknoloji ve işletme alanlarını bütüncül bir bakış açısıyla değerlendirmek.",
-  "Analitik ve Eleştirel Düşünce: Karmaşık sorunlara mantıksal, tutarlı ve uygulanabilir çözümler geliştirmek.",
-  "Sürekli Öğrenme: Akademik ve profesyonel gelişimi destekleyen yenilikleri takip ederek bilgi birikimini güncel tutmak.",
-  "Profesyonel Tutum: Çalışmalarda ciddiyet, sorumluluk bilinci ve metodolojik yaklaşımı ön planda tutmak."
-]
-
+        title: "Yaklaşımım & Kişisel Özellikler",
+        icon: "psychology",
+        items: [
+          "Disiplinlerarası Perspektif: Felsefe, teknoloji ve işletme alanlarını bütüncül bir bakış açısıyla değerlendirmek.",
+          "Analitik ve Eleştirel Düşünce: Karmaşık sorunlara mantıksal, tutarlı ve uygulanabilir çözümler geliştirmek.",
+          "Sürekli Öğrenme: Akademik ve profesyonel gelişimi destekleyen yenilikleri takip ederek bilgi birikimini güncel tutmak.",
+          "Profesyonel Tutum: Çalışmalarda ciddiyet, sorumluluk bilinci ve metodolojik yaklaşımı ön planda tutmak."
         ],
         color: "from-orange-400 via-red-500 to-pink-500",
         noIcon: false,
@@ -229,8 +222,8 @@ items: [
     function sectionItemHTML(item, iconType, noIcon = false) {
       const delay = globalDelayCount++;
       return `<li class="flex items-start gap-2 mb-3 fade-in delay-${delay}">
-        ${noIcon ? "" : `<span class="material-icons-outlined text-lg text-gray-400 mt-0.5">${iconType || 'check_circle'}</span>`}
-        <span class="text-gray-700 leading-relaxed">${item}</span>
+        ${noIcon ? "" : `<span class="material-icons-outlined text-lg text-gray-400 mt-0.5 shrink-0">${iconType || 'check_circle'}</span>`}
+        <span class="text-gray-700 text-left leading-relaxed">${item}</span>
       </li>`;
     }
 
