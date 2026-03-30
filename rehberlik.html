@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yusuf Kitapçı | Rehberlik ve Danışmanlık</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      background-color: #f9fafb;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @layer utilities {
+      .animate-gradient {
+        background-size: 200% 200%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: gradientMove 4s ease infinite;
+      }
+      @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.7s forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .fade-in.delay-1 { animation-delay: .1s; }
+    .fade-in.delay-2 { animation-delay: .2s; }
+    .fade-in.delay-3 { animation-delay: .3s; }
+    .fade-in.delay-4 { animation-delay: .4s; }
+    .fade-in.delay-5 { animation-delay: .5s; }
+    .fade-in.delay-6 { animation-delay: .6s; }
+    .fade-in.delay-7 { animation-delay: .7s; }
+    .fade-in.delay-8 { animation-delay: .8s; }
+    .fade-in.delay-9 { animation-delay: .9s; }
+    .fade-in.delay-10 { animation-delay: 1.0s; }
+    .fade-in.delay-11 { animation-delay: 1.1s; }
+    .fade-in.delay-12 { animation-delay: 1.2s; }
+    .fade-in.delay-13 { animation-delay: 1.3s; }
+    .fade-in.delay-14 { animation-delay: 1.4s; }
+    .fade-in.delay-15 { animation-delay: 1.5s; }
+  </style>
+</head>
+<body class="text-gray-800 font-sans">
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="max-w-2xl mx-auto mt-16 p-6 text-center bg-white bg-opacity-80 rounded-xl shadow-md relative">
+    <a href="index.html" class="absolute top-6 left-6 text-gray-400 hover:text-emerald-500 transition">
+      <span class="material-icons-outlined text-3xl">arrow_back</span>
+    </a>
+    
+    <h1 class="text-4xl font-bold animate-gradient bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 mb-2 mt-4">
+      Rehberlik ve Danışmanlık
+    </h1>
+    <p class="text-sm text-gray-600 mb-8">Kendini tanıma, potansiyelini keşfetme ve anlam odaklı bir gelecek planlama süreci.</p>
+    
+    <div id="profile-sections"></div>
+    
+    <footer class="mt-8 text-xs text-gray-500 text-center border-t pt-4">
+      &copy; 2026 Yusuf <span class="uppercase">KİTAPÇI</span> | Tüm hakları saklıdır.
+    </footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    let width, height;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const particles = [];
+    const PARTICLE_NUM = Math.max(90, Math.floor((width * height) / 22000));
+    const LINE_DIST = 120;
+
+    function createParticles() {
+      particles.length = 0;
+      for (let i = 0; i < PARTICLE_NUM; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6
+        });
+      }
+    }
+    createParticles();
+    window.addEventListener("resize", createParticles);
+
+    let mouse = { x: -1000, y: -1000 };
+    document.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    document.addEventListener("mouseleave", () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 40, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgba(16, 185, 129, 0.05)"; // Zümrüt yeşili tonları
+      ctx.fill();
+
+      for (const p of particles) {
+        const dx = mouse.x - p.x, dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          p.x -= dx * 0.008;
+          p.y -= dy * 0.008;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i], p2 = particles[j];
+          const dx = p1.x - p2.x, dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINE_DIST) {
+            const mx = (p1.x + p2.x) / 2, my = (p1.y + p2.y) / 2;
+            const mouseDist = Math.sqrt((mx - mouse.x) ** 2 + (my - mouse.y) ** 2);
+            let opacity = 0.07 + 0.23 * (1 - dist / LINE_DIST);
+            if (mouseDist < 120) opacity = Math.min(0.55, opacity + 0.26);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${opacity})`; 
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
+        let opacity = 0.18;
+        const dist = Math.sqrt((p.x - mouse.x) ** 2 + (p.y - mouse.y) ** 2);
+        if (dist < 120) opacity = 0.36;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(16, 185, 129, ${opacity})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    const sections = [
+      {
+        title: "Temel Yaklaşımım",
+        icon: "explore",
+        items: [
+          "Sadece sınav veya not odaklı değil, bireyin potansiyeline odaklanan bütüncül rehberlik.",
+          "Felsefi danışmanlık perspektifiyle kişinin kendi değerlerini ve ilgi alanlarını keşfetmesini sağlama.",
+          "Sorun çözmekten ziyade, sorunlarla başa çıkma becerilerini ve psikolojik dayanıklılığı (resilience) geliştirme."
+        ],
+        color: "from-emerald-500 via-teal-500 to-cyan-500",
+        noIcon: false,
+        iconType: "format_quote"
+      },
+      {
+        title: "Çalışma & Destek Alanları",
+        icon: "track_changes",
+        items: [
+          "Akademik Planlama ve Kişiselleştirilmiş Verimli Çalışma Stratejileri",
+          "Kariyer Danışmanlığı, Meslek Seçimi ve Hedef Belirleme",
+          "Sınav Kaygısı, Motivasyon ve Etkili Zaman Yönetimi",
+          "Dijital Çağda Odaklanma Problemleri ve Teknoloji-Yaşam Dengesi"
+        ],
+        color: "from-cyan-500 via-blue-500 to-indigo-500",
+        noIcon: false,
+        iconType: "adjust"
+      },
+      {
+        title: "Danışmanlık Süreci Nasıl İşler?",
+        icon: "route",
+        items: [
+          "<b>1. Tanışma ve Durum Analizi:</b> Mevcut durumun, beklentilerin ve temel ihtiyaçların tespit edilmesi.",
+          "<b>2. Yol Haritası Oluşturma:</b> Bireyin yaşam ritmine ve hedeflerine uygun, gerçekçi bir planlama yapılması.",
+          "<b>3. Düzenli Takip ve Güncelleme:</b> Belirli periyotlarla gelişimin izlenmesi, karşılaşılan engellerin aşılması ve stratejilerin revize edilmesi."
+        ],
+        color: "from-blue-500 via-indigo-500 to-purple-500",
+        noIcon: false,
+        iconType: "timeline"
+      }
+    ];
+
+    let globalDelayCount = 1;
+
+    function sectionItemHTML(item, iconType, noIcon = false) {
+      const delay = globalDelayCount++;
+      return `<li class="flex items-start gap-2 mb-3 fade-in delay-${delay}">
+        ${noIcon ? "" : `<span class="material-icons-outlined text-lg text-teal-500 mt-0.5 shrink-0">${iconType || 'check_circle'}</span>`}
+        <span class="text-gray-700 leading-relaxed">${item}</span>
+      </li>`;
+    }
+
+    function sectionHTML(section) {
+      return `
+        <div class="mb-10">
+          <div class="flex items-center justify-center mb-4">
+            <span class="material-icons-outlined text-2xl bg-gradient-to-r ${section.color} bg-clip-text text-transparent mr-2">${section.icon}</span>
+            <h2 class="text-xl font-semibold bg-gradient-to-r ${section.color} bg-clip-text text-transparent">${section.title}</h2>
+          </div>
+          <ul class="text-left max-w-md mx-auto">
+            ${section.items.map(item => sectionItemHTML(item, section.iconType, section.noIcon)).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    document.getElementById("profile-sections").innerHTML = sections.map(sectionHTML).join('');
+  </script>
+</body>
+</html>
